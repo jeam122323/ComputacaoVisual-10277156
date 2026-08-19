@@ -1,14 +1,14 @@
-# [Seu Nome] - Blog
+# Henrique Jeam - Blog
 
-## Computação Visual (2026.2)
+## Computação Visual 
 
-[Seu Nome]
+Henrique Jeam
 
 ## Sobre
 
-Este blog foi criado para a disciplina de Computação Visual, como parte da atividade proposta pelo professor.
-Aqui vou compartilhar reflexões, descobertas e conteúdos relacionados aos temas discutidos em aula.
+Esse blog é da disciplina de Computação Visual. Vou usar ele pra ir postando o que a gente
+for vendo ao longo do semestre.
 
 ## Posts
 
-1. [O que eu esperava da disciplina?](01_o-que-esperava.html) (18/08/2026)
+1. [O que eu esperava da disciplina?](01_o-que-eu-esperava.html) (18/08/2026)
