@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O que eu esperava da disciplina? — Computação Visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #faf9f6;
+    --text: #1f1f1f;
+    --text-dim: #6b6b6b;
+    --accent: #7a5c3e;
+    --border: #e2ded5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.7;}
+  a{color:var(--accent);}
+
+  header{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:24px 8vw;border-bottom:1px solid var(--border);
+  }
+  .brand{font-weight:600;font-size:15px;text-decoration:none;color:var(--text);}
+  .back{font-size:14px;color:var(--text-dim);text-decoration:none;}
+  .back:hover{color:var(--accent);}
+
+  article{max-width:650px;margin:0 auto;padding:64px 8vw 100px;}
+  .post-date{color:var(--text-dim);font-size:14px;margin-bottom:12px;}
+  h1{
+    font-family:'Merriweather',serif;font-weight:700;
+    font-size:clamp(1.7rem, 4vw, 2.3rem);line-height:1.25;margin-bottom:36px;
+  }
+  h2{
+    font-family:'Merriweather',serif;font-weight:700;
+    font-size:1.2rem;margin:36px 0 14px;color:var(--accent);
+  }
+  p{margin-bottom:16px;font-size:16px;}
+  ul{margin:0 0 16px 20px;}
+  li{margin-bottom:10px;}
+  li b{color:var(--accent);}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand">Computação Visual</a>
+  <a href="index.html" class="back">← Voltar</a>
+</header>
+
+<article>
+  <div class="post-date">18/08/2026 · Henrique Jean</div>
+  <h1>O que eu esperava da disciplina?</h1>
+
+  <h2>O que eu achava que veria</h2>
+  <p>Antes da primeira aula eu não fazia muita ideia do que essa disciplina realmente ia abordar. Pelo nome, imaginei que fosse algo mais ligado a interfaces gráficas e front-end, meio parecido com IHC. Também pensei que pudesse envolver bastante ferramenta tipo Photoshop e Blender, ou até reconhecimento de padrões em imagem usando IA.</p>
+  <p>Fiquei meio em dúvida também se era uma continuação de Computação Gráfica (modelagem 3D, renderização e esse tipo de coisa) ou se ia puxar mais pro lado de Visão Computacional, com câmera, detecção de objeto, esse tipo de aplicação. Como não tinha muita clareza sobre o conteúdo, fiquei curioso pra ver como o professor ia amarrar tudo isso numa matéria só.</p>
+
+  <h2>O que eu entendi que vamos estudar</h2>
+  <p>Depois de ver o material da primeira aula, entendi que Computação Visual é tipo um "guarda-chuva" que junta três áreas que normalmente são tratadas separadas: Computação Gráfica, Visão Computacional e Processamento de Imagens.</p>
+  <p>O conteúdo da primeira aula começou pelos fundamentos da imagem digital, e curiosamente não começou falando de código ou algoritmo, e sim de como o próprio olho humano funciona. Alguns pontos que vimos:</p>
+  <ul>
+    <li><b>Olho humano:</b> as estruturas principais (córnea, íris, pupila, cristalino, retina) e como a imagem é formada e focalizada na fóvea.</li>
+    <li><b>Fotorreceptores:</b> a diferença entre cones (sensíveis à cor, concentrados na fóvea, usados na visão de luz clara/fotópica) e bastonetes (sensíveis à luminosidade, espalhados pela retina, usados na visão noturna/escotópica).</li>
+    <li><b>Adaptação ao brilho:</b> como o olho ajusta a sensibilidade dependendo da luz do ambiente, mesmo sem conseguir operar em toda a escala de intensidade luminosa ao mesmo tempo.</li>
+    <li><b>Ilusões de ótica:</b> coisas como as bandas de Mach e o contraste simultâneo, que mostram que o brilho percebido não depende só da intensidade real da luz, mas também do que tem ao redor.</li>
+    <li><b>Espectro eletromagnético e luz:</b> a luz visível é só uma fatia bem pequena do espectro eletromagnético todo, com a relação entre comprimento de onda, frequência e energia, além dos fenômenos de reflexão, transmissão, absorção e refração.</li>
+    <li><b>Cor:</b> a diferença entre luz acromática (escala de cinza) e cromática, e as teorias que explicam como a gente percebe cor (Teoria Tricromática e Teoria de Maxwell), baseadas nos três tipos de cones sensíveis a vermelho, verde e azul.</li>
+  </ul>
+  <p>Achei interessante que antes de entrar em processamento de imagem em si, a disciplina começa explicando como a gente enxerga naturalmente. Faz sentido, já que pra processar ou criar imagem digital é bom entender primeiro como funciona a visão humana.</p>
+</article>
+
+</body>
+</html>
