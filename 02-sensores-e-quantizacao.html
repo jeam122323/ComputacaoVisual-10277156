@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Como uma imagem vira números — Computação Visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #faf9f6;
+    --text: #1f1f1f;
+    --text-dim: #6b6b6b;
+    --accent: #7a5c3e;
+    --border: #e2ded5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.7;}
+  a{color:var(--accent);}
+
+  header{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:24px 8vw;border-bottom:1px solid var(--border);
+  }
+  .brand{font-weight:600;font-size:15px;text-decoration:none;color:var(--text);}
+  .back{font-size:14px;color:var(--text-dim);text-decoration:none;}
+  .back:hover{color:var(--accent);}
+
+  article{max-width:650px;margin:0 auto;padding:64px 8vw 100px;}
+  .post-date{color:var(--text-dim);font-size:14px;margin-bottom:12px;}
+  h1{
+    font-family:'Merriweather',serif;font-weight:700;
+    font-size:clamp(1.7rem, 4vw, 2.3rem);line-height:1.25;margin-bottom:36px;
+  }
+  h2{
+    font-family:'Merriweather',serif;font-weight:700;
+    font-size:1.2rem;margin:36px 0 14px;color:var(--accent);
+  }
+  p{margin-bottom:16px;font-size:16px;}
+  ul{margin:0 0 16px 20px;}
+  li{margin-bottom:10px;}
+  li b{color:var(--accent);}
+  code{
+    background:#f0ede6;padding:2px 6px;border-radius:4px;
+    font-size:14px;color:var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand">Computação Visual</a>
+  <a href="index.html" class="back">← Voltar</a>
+</header>
+
+<article>
+  <div class="post-date">25/08/2026 · Henrique Jean</div>
+  <h1>Como uma imagem vira números</h1>
+
+  <p>Na segunda aula a gente saiu do olho humano e foi pra outra ponta do processo: como uma câmera ou scanner captura o mundo e transforma isso em algo que o computador consegue guardar. Achei essa parte mais "técnica" que a primeira aula, então resolvi anotar aqui como entendi cada etapa.</p>
+
+  <h2>De onde vem a imagem</h2>
+  <p>O primeiro ponto foi entender que toda imagem que a gente capta é, na prática, o resultado de uma fonte de luz iluminando alguma coisa e um sensor captando a energia refletida por essa coisa. Isso é resumido numa fórmula simples: a intensidade de um ponto da imagem é a iluminação que chega ali, multiplicada pela quantidade que o objeto reflete dessa luz. Faz sentido: um objeto bem escuro absorve quase tudo (reflete perto de 0), enquanto neve ou metal prateado refletem quase toda a luz que recebem (perto de 1).</p>
+  <p>O professor mostrou uns valores curiosos, tipo a diferença de iluminação entre um dia de sol e uma noite de lua cheia (é uma diferença gigantesca), e como cada material reflete de um jeito bem diferente — veludo preto quase não reflete nada, já a neve reflete quase tudo.</p>
+
+  <h2>Os tipos de sensor</h2>
+  <p>Teve 3 tipos de sensor que vimos:</p>
+  <ul>
+    <li><b>Sensor único:</b> só um ponto de captura, gera uma forma de onda.</li>
+    <li><b>Sensor de linha:</b> uma fileira de sensores, usado em scanner e satélite — vai "varrendo" linha por linha.</li>
+    <li><b>Sensor de área (matricial):</b> é o que a maioria das câmeras digitais usa hoje, capta a imagem inteira de uma vez numa matriz.</li>
+  </ul>
+  <p>Isso me fez entender melhor por que um scanner de mesa demora mais pra digitalizar uma folha (ele tá varrendo linha por linha) enquanto uma câmera tira a foto inteira instantaneamente.</p>
+
+  <h2>Amostragem e quantização</h2>
+  <p>Essa foi a parte que achei mais importante entender bem, porque explica a diferença entre o mundo real (contínuo) e a imagem digital (discreta):</p>
+  <ul>
+    <li><b>Amostragem:</b> é decidir em quantos pontos (pixels) a gente vai "medir" a imagem — basicamente a resolução.</li>
+    <li><b>Quantização:</b> é decidir quantos níveis de intensidade cada ponto pode assumir (por exemplo, quantos tons de cinza entre o preto e o branco).</li>
+  </ul>
+  <p>Uma coisa que não tinha parado pra pensar antes: o número de níveis de cinza normalmente é uma potência de 2 (tipo 256 níveis = 2⁸), e por isso a gente fala em "imagem de 8 bits". Quanto mais bits, mais suave fica a transição entre os tons — com poucos níveis a imagem fica com aquele efeito de "faixas" bem visíveis, tipo posterizado.</p>
+
+  <h2>A imagem como matriz</h2>
+  <p>No fim das contas, depois da amostragem e quantização, a imagem vira uma matriz de <code>M x N</code> elementos, onde cada posição é um pixel com um valor numérico de intensidade. É meio óbvio quando você já mexeu com processamento de imagem antes, mas ver a formalização matemática ajudou a entender por que, em código, a gente sempre trata imagem como uma matriz — porque ela literalmente é isso.</p>
+  <p>Também vimos o conceito de resolução espacial (DPI para impressão, PPI para tela), e ficou bem visual o exemplo comparando a mesma imagem em 1250, 300, 150 e 72 DPI — dá pra perceber a perda de detalhe conforme a resolução cai.</p>
+
+  <h2>Extra: parte prática com C e SDL</h2>
+  <p>Além do conteúdo teórico, o professor também passou uma parte prática usando linguagem C com a biblioteca SDL3, pra configurar o ambiente e fazer o clássico "Hello World" gráfico. Ainda não mexi nisso, mas pretendo testar durante a semana e talvez trazer num próximo post o resultado de configurar o ambiente.</p>
+
+</article>
+
+</body>
+</html>
