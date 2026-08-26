@@ -7,45 +7,103 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
+  :root {
     --bg: #faf9f6;
     --text: #1f1f1f;
     --text-dim: #6b6b6b;
     --accent: #7a5c3e;
     --border: #e2ded5;
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Inter',sans-serif;
-    line-height:1.6;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
   }
-  a{color:inherit;text-decoration:none;}
+  a { color: inherit; text-decoration: none; }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 8vw;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { font-weight: 600; font-size: 15px; letter-spacing: 0.02em; }
+  header nav a { font-size: 14px; color: var(--text-dim); }
+  header nav a:hover { color: var(--accent); }
+  .hero {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 80px 8vw 48px;
+    text-align: center;
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.2;
+  }
+  .subtitle { color: var(--text-dim); margin-top: 16px; font-size: 16px; }
+  main { max-width: 700px; margin: 0 auto; padding: 0 8vw 100px; }
+  .post-card {
+    display: block;
+    padding: 28px 0;
+    border-top: 1px solid var(--border);
+    transition: opacity 0.2s;
+  }
+  .post-card:hover { opacity: 0.7; }
+  .post-date { color: var(--text-dim); font-size: 13px; margin-bottom: 8px; }
+  .post-title {
+    font-family: 'Merriweather', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .post-excerpt { color: var(--text-dim); font-size: 15px; margin-top: 8px; }
+  footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--text-dim);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
 
-  header{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:24px 8vw;border-bottom:1px solid var(--border);
-  }
-  .brand{font-weight:600;font-size:15px;letter-spacing:0.02em;}
-  header nav a{font-size:14px;color:var(--text-dim);}
-  header nav a:hover{color:var(--accent);}
+<header>
+  <div class="brand">Computação Visual</div>
+  <nav><a href="https://github.com/jeam122323/ComputacaoVisual-10277156" target="_blank">Repositório</a></nav>
+</header>
 
-  .hero{max-width:700px;margin:0 auto;padding:80px 8vw 48px;text-align:center;}
-  .eyebrow{
-    color:var(--accent);font-size:13px;letter-spacing:0.08em;
-    text-transform:uppercase;font-weight:600;margin-bottom:16px;
-  }
-  h1{
-    font-family:'Merriweather',serif;font-weight:700;
-    font-size:clamp(2rem, 5vw, 2.8rem);line-height:1.2;
-  }
-  .subtitle{color:var(--text-dim);margin-top:16px;font-size:16px;}
+<section class="hero">
+  <div class="eyebrow">Blog · 2026.2</div>
+  <h1>Anotações de Computação Visual</h1>
+  <p class="subtitle">Blog pessoal da disciplina, mantido por Henrique Jean.</p>
+</section>
 
-  main{max-width:700px;margin:0 auto;padding:0 8vw 100px;}
-  .post-card{
-    display:block;padding:28px 0;border-top:1px solid var(--border);
-    transition:opacity .2s;
-  }
-  .post-card:hover{opacity:0.7;}
-  .post-date{color:var(--text-dim);font-size:1}
+<main>
+  <a href="01-o-que-eu-esperava.html" class="post-card">
+    <div class="post-date">18/08/2026</div>
+    <div class="post-title">O que eu esperava da disciplina?</div>
+    <div class="post-excerpt">Minhas primeiras impressões sobre o que a matéria abordaria e o que aprendi na primeira aula.</div>
+  </a>
+  <a href="02-sensores-e-quantizacao.html" class="post-card">
+    <div class="post-date">25/08/2026</div>
+    <div class="post-title">Como uma imagem vira números</div>
+    <div class="post-excerpt">Sensores, aquisição de imagens, amostragem e quantização — como o mundo real vira dados no computador.</div>
+  </a>
+</main>
+
+<footer>Construído com GitHub Pages.</footer>
+
+</body>
+</html>

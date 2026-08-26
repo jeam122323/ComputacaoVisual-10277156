@@ -7,42 +7,52 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
+  :root {
     --bg: #faf9f6;
     --text: #1f1f1f;
     --text-dim: #6b6b6b;
     --accent: #7a5c3e;
     --border: #e2ded5;
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.7;}
-  a{color:var(--accent);}
-
-  header{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:24px 8vw;border-bottom:1px solid var(--border);
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.7; }
+  a { color: var(--accent); }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 8vw;
+    border-bottom: 1px solid var(--border);
   }
-  .brand{font-weight:600;font-size:15px;text-decoration:none;color:var(--text);}
-  .back{font-size:14px;color:var(--text-dim);text-decoration:none;}
-  .back:hover{color:var(--accent);}
-
-  article{max-width:650px;margin:0 auto;padding:64px 8vw 100px;}
-  .post-date{color:var(--text-dim);font-size:14px;margin-bottom:12px;}
-  h1{
-    font-family:'Merriweather',serif;font-weight:700;
-    font-size:clamp(1.7rem, 4vw, 2.3rem);line-height:1.25;margin-bottom:36px;
+  .brand { font-weight: 600; font-size: 15px; text-decoration: none; color: var(--text); }
+  .back { font-size: 14px; color: var(--text-dim); text-decoration: none; }
+  .back:hover { color: var(--accent); }
+  article { max-width: 650px; margin: 0 auto; padding: 64px 8vw 100px; }
+  .post-date { color: var(--text-dim); font-size: 14px; margin-bottom: 12px; }
+  h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    line-height: 1.25;
+    margin-bottom: 36px;
   }
-  h2{
-    font-family:'Merriweather',serif;font-weight:700;
-    font-size:1.2rem;margin:36px 0 14px;color:var(--accent);
+  h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 36px 0 14px;
+    color: var(--accent);
   }
-  p{margin-bottom:16px;font-size:16px;}
-  ul{margin:0 0 16px 20px;}
-  li{margin-bottom:10px;}
-  li b{color:var(--accent);}
-  code{
-    background:#f0ede6;padding:2px 6px;border-radius:4px;
-    font-size:14px;color:var(--accent);
+  p { margin-bottom: 16px; font-size: 16px; }
+  ul { margin: 0 0 16px 20px; }
+  li { margin-bottom: 10px; }
+  li b { color: var(--accent); }
+  code {
+    background: #f0ede6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--accent);
   }
 </style>
 </head>
@@ -86,7 +96,6 @@
 
   <h2>Extra: parte prática com C e SDL</h2>
   <p>Além do conteúdo teórico, o professor também passou uma parte prática usando linguagem C com a biblioteca SDL3, pra configurar o ambiente e fazer o clássico "Hello World" gráfico. Ainda não mexi nisso, mas pretendo testar durante a semana e talvez trazer num próximo post o resultado de configurar o ambiente.</p>
-
 </article>
 
 </body>
