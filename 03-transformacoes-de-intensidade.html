@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformações de intensidade — Computação Visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --text: #1f1f1f;
+    --text-dim: #6b6b6b;
+    --accent: #7a5c3e;
+    --border: #e2ded5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.7; }
+  a { color: var(--accent); }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 8vw;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { font-weight: 600; font-size: 15px; text-decoration: none; color: var(--text); }
+  .back { font-size: 14px; color: var(--text-dim); text-decoration: none; }
+  .back:hover { color: var(--accent); }
+  article { max-width: 650px; margin: 0 auto; padding: 64px 8vw 100px; }
+  .post-date { color: var(--text-dim); font-size: 14px; margin-bottom: 12px; }
+  h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    line-height: 1.25;
+    margin-bottom: 36px;
+  }
+  h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 36px 0 14px;
+    color: var(--accent);
+  }
+  p { margin-bottom: 16px; font-size: 16px; }
+  ul { margin: 0 0 16px 20px; }
+  li { margin-bottom: 10px; }
+  li b { color: var(--accent); }
+  code {
+    background: #f0ede6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand">Computação Visual</a>
+  <a href="index.html" class="back">← Voltar</a>
+</header>
+
+<article>
+  <div class="post-date">01/09/2026 · Henrique Jeam</div>
+  <h1>Transformações de intensidade</h1>
+
+  <p>Depois de entender como uma imagem é capturada e vira uma matriz de pixels, essa aula foi sobre o que dá pra fazer com esses valores. Foi a primeira vez que vimos algo mais "prático" no sentido de processamento de imagem em si, não só de fundamentos.</p>
+
+  <h2>Domínio espacial x função de transformação</h2>
+  <p>O primeiro conceito foi entender que existem duas formas de mexer numa imagem no domínio espacial (ou seja, trabalhando direto em cima dos pixels, sem transformar pra outro formato tipo frequência): transformação de intensidade e filtragem espacial.</p>
+  <ul>
+    <li><b>Transformação de intensidade:</b> mexe pixel por pixel, sem olhar pra vizinhança. Serve pra coisas tipo ajustar contraste ou limiarizar (transformar em preto e branco).</li>
+    <li><b>Filtragem espacial:</b> olha a vizinhança de cada pixel, usada pra realce e detecção de borda (isso a gente ainda não viu, deve ser assunto de uma próxima aula).</li>
+  </ul>
+  <p>A parte da transformação de intensidade dá pra resumir numa equação simples: <code>s = T(r)</code>, onde <code>r</code> é a intensidade do pixel de entrada e <code>s</code> é a intensidade do pixel de saída, depois de passar pela função T.</p>
+
+  <h2>Negativo da imagem</h2>
+  <p>A transformação mais simples de entender foi o negativo: <code>s = (L-1) - r</code>. Basicamente inverte os valores de intensidade, tipo negativo de fotografia analógica. Achei interessante o motivo de usar isso: ajuda a realçar detalhes claros que estão escondidos em áreas escuras da imagem, principalmente quando essas áreas escuras dominam a imagem.</p>
+
+  <h2>Transformação logarítmica</h2>
+  <p>A transformação log (<code>s = c log(1+r)</code>) faz uma coisa que achei bem útil: ela "estica" os tons mais escuros, deixando detalhes escondidos no escuro mais visíveis, e ao mesmo tempo "comprime" os tons mais claros, pra eles não estourarem em branco total. Um exemplo que ficou claro foi o do espectro de Fourier, que tem valores que variam muito (de 0 a milhões), e sem a transformação log, os valores altos dominam a exibição e a gente perde os detalhes dos valores baixos.</p>
+
+  <h2>Transformação de potência (gama)</h2>
+  <p>Essa é a que achei mais aplicável no dia a dia, porque é literalmente o que qualquer editor de foto chama de "ajuste de gama". A fórmula é <code>s = c · r^γ</code>, e o que muda tudo é o valor de γ:</p>
+  <ul>
+    <li><b>γ menor que 1:</b> clareia a imagem, realçando detalhes em regiões escuras. Bom pra foto muito escura.</li>
+    <li><b>γ maior que 1:</b> escurece a imagem, realçando detalhes em regiões claras. Bom pra foto "estourada"/muito clara.</li>
+  </ul>
+  <p>Também vimos que monitores e câmeras já seguem naturalmente uma lei de potência, e por isso existe a "correção gama" (normalmente entre 1.8 e 2.5) pra imagem aparecer com a exatidão certa na tela.</p>
+
+  <h2>Transformações lineares por partes</h2>
+  <p>Por último vimos um grupo de transformações mais flexíveis, porque não seguem uma fórmula fixa — dá pra desenhar a curva do jeito que quiser, só que exige mais trabalho manual de configuração:</p>
+  <ul>
+    <li><b>Alargamento de contraste:</b> pega uma imagem de baixo contraste (por causa de iluminação ruim, por exemplo) e espalha os níveis de intensidade pra ocupar toda a faixa disponível.</li>
+    <li><b>Fatiamento de níveis de intensidade:</b> realça só uma faixa específica de intensidade, tipo destacar massas de água numa imagem de satélite ou realçar uma região de interesse numa imagem médica.</li>
+    <li><b>Fatiamento por planos de bits:</b> como cada pixel de 8 bits é formado por 8 "planos" de 1 bit, dá pra separar e reconstruir a imagem usando só os planos mais significativos. Achei essa parte curiosa porque mostra que dá até pra comprimir uma imagem descartando os planos menos importantes e ainda manter boa parte da informação visual.</li>
+  </ul>
+
+  <p>No geral, essa aula deixou mais claro por que processamento de imagem é basicamente aplicar funções matemáticas em cima de uma matriz de números — cada transformação é só uma fórmula diferente aplicada pixel por pixel.</p>
+</article>
+
+</body>
+</html>
