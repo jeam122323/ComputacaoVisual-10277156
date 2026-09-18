@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Histograma e interpolação — Computação Visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --text: #1f1f1f;
+    --text-dim: #6b6b6b;
+    --accent: #7a5c3e;
+    --border: #e2ded5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.7; }
+  a { color: var(--accent); }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { font-weight: 600; font-size: 15px; text-decoration: none; color: var(--text); }
+  .back { font-size: 14px; color: var(--text-dim); text-decoration: none; }
+  .back:hover { color: var(--accent); }
+  article { max-width: 650px; margin: 0 auto; padding: 64px 24px 100px; }
+  .post-date { color: var(--text-dim); font-size: 14px; margin-bottom: 12px; }
+  h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+    line-height: 1.25;
+    margin-bottom: 36px;
+  }
+  h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 36px 0 14px;
+    color: var(--accent);
+  }
+  h3 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin: 24px 0 10px;
+  }
+  p { margin-bottom: 16px; font-size: 16px; }
+  ul { margin: 0 0 16px 20px; }
+  li { margin-bottom: 10px; }
+  li b { color: var(--accent); }
+  code {
+    background: #f0ede6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--accent);
+  }
+  pre {
+    background: #f0ede6;
+    padding: 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand">Computação Visual</a>
+  <a href="index.html" class="back">← Voltar</a>
+</header>
+
+<article>
+  <div class="post-date">08/09/2026 · Henrique Jeam</div>
+  <h1>Histograma e interpolação</h1>
+
+  <p>Essas duas aulas vieram meio de mãos dadas pra mim, então resolvi juntar as anotações num post só. A primeira olha a imagem de forma estatística (histograma), e a segunda resolve o problema de como preencher pixels que não existem quando a gente redimensiona uma imagem (interpolação).</p>
+
+  <h2>Parte 1 — Processamento de histograma</h2>
+
+  <h3>O que é o histograma</h3>
+  <p>O histograma de uma imagem é basicamente um gráfico que mostra, pra cada nível de intensidade possível (de 0 até L-1), quantos pixels da imagem têm aquela intensidade. É tipo um "resumo" de como a luz e o escuro estão distribuídos na imagem, sem informação de onde cada pixel está espacialmente.</p>
+  <p>Isso serve pra várias coisas: realçar imagem, tirar estatísticas úteis, e até ajudar em processos de compressão e segmentação.</p>
+
+  <h3>Histograma normalizado</h3>
+  <p>Uma parte que achei importante foi a normalização: em vez de contar o número bruto de pixels com cada intensidade, divide-se esse número pelo total de pixels da imagem (M x N). O resultado é basicamente uma estimativa de probabilidade — a chance de um pixel aleatório da imagem ter aquela intensidade específica. Faz sentido que a soma de todos esses valores normalizados dê exatamente 1, porque cobre 100% dos pixels da imagem.</p>
+
+  <h3>O que o formato do histograma revela</h3>
+  <p>Só de olhar o formato do gráfico já dá pra tirar conclusões sobre a imagem:</p>
+  <ul>
+    <li><b>Imagem escura:</b> histograma concentrado nos valores baixos de intensidade.</li>
+    <li><b>Imagem clara:</b> histograma concentrado nos valores altos.</li>
+    <li><b>Baixo contraste:</b> histograma bem estreito, concentrado numa faixa pequena de intensidades.</li>
+    <li><b>Alto contraste:</b> histograma espalhado, ocupando quase toda a faixa de 0 a L-1.</li>
+  </ul>
+
+  <h3>Equalização de histograma</h3>
+  <p>Essa foi a parte mais "matemática" da aula. A ideia da equalização é redistribuir os níveis de intensidade pra deixar o histograma mais uniforme (espalhado por toda a faixa), o que geralmente melhora o contraste de imagens muito escuras, muito claras ou de baixo contraste.</p>
+  <p>O processo usa a função de distribuição acumulada (CDF) da probabilidade de cada intensidade. A fórmula soma as probabilidades de todas as intensidades até o nível atual e multiplica pelo valor máximo de intensidade (L-1). No exemplo que o professor mostrou, com uma imagem de 3 bits (8 níveis de intensidade), dava pra ver como cada nível de intensidade original ia sendo "empurrado" pra um novo valor calculado a partir dessa soma acumulada — cada imagem tem sua própria transformação de equalização, calculada em cima da distribuição real dela.</p>
+
+  <hr>
+
+  <h2>Parte 2 — Interpolação de imagens</h2>
+
+  <h3>O que é interpolação</h3>
+  <p>Essa aula respondeu uma pergunta que eu nem sabia que tinha: quando a gente redimensiona uma imagem (aumenta ou diminui o tamanho), de onde vêm as informações dos pixels novos que não existiam na imagem original? A resposta é interpolação — uma técnica pra estimar valores que não foram medidos diretamente, baseando-se nos valores que a gente já tem. É usada em ampliação, redução, rotação e correções geométricas.</p>
+
+  <h3>Vizinho mais próximo (nearest neighbor)</h3>
+  <p>O método mais simples: pra cada pixel novo da imagem redimensionada, pega-se a cor do pixel mais próximo na imagem original. No exemplo do professor, uma imagem de 3x3 pixels era ampliada pra 6x6 (escala de fator 2), e cada pixel novo copiava o pixel original mais próximo, calculado com <code>floor(output_col / scale)</code> e <code>floor(output_row / scale)</code>. É rápido e simples, mas o resultado fica com aparência "blocada"/pixelada em ampliações grandes, já que é literalmente uma cópia repetida, sem mistura entre pixels vizinhos.</p>
+
+  <h3>Interpolação linear</h3>
+  <p>Antes de chegar na interpolação bilinear (usada em imagem 2D), vimos o conceito de interpolação linear, que funciona numa única dimensão entre dois pontos V0 e V1:</p>
+  <pre>float lerp(float v0, float v1, float alpha) {
+  return (1.0 - alpha) * v0 + alpha * v1;
+}</pre>
+  <p>O parâmetro alpha (entre 0.0 e 1.0) define o quanto o resultado está "puxado" pra um lado ou pro outro. Com alpha = 0, o resultado é igual a V0; com alpha = 1, igual a V1; com alpha = 0.5, exatamente no meio dos dois.</p>
+
+  <h3>Interpolação bilinear</h3>
+  <p>A interpolação bilinear estende essa mesma ideia pra duas dimensões, usando os quatro pixels vizinhos mais próximos do ponto que se quer estimar (em vez de só um, como no método de vizinho mais próximo).</p>
+  <p>O processo funciona em duas etapas: primeiro duas interpolações lineares na horizontal (entre os pares de pixels de cima e de baixo), depois uma interpolação vertical entre esses dois resultados intermediários. Na prática é como aplicar a função <code>lerp</code> três vezes seguidas — duas na horizontal, uma na vertical. Isso resulta numa transição bem mais suave entre os pixels do que o método de vizinho mais próximo, já que a cor de cada pixel novo leva em conta uma média ponderada dos vizinhos, não só uma cópia direta.</p>
+
+  <p>No geral, ficou claro que quanto mais "vizinhos" um método de interpolação considera, melhor tende a ser a qualidade visual do resultado — só que também exige mais cálculo. Vizinho mais próximo é rápido mas grosseiro; bilinear é mais suave mas mais custoso.</p>
+</article>
+
+</body>
+</html>
