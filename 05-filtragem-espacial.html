@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explorando filtragem espacial — Computação Visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --text: #1f1f1f;
+    --text-dim: #6b6b6b;
+    --accent: #7a5c3e;
+    --border: #e2ded5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.7; }
+  a { color: var(--accent); }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { font-weight: 600; font-size: 15px; text-decoration: none; color: var(--text); }
+  .back { font-size: 14px; color: var(--text-dim); text-decoration: none; }
+  .back:hover { color: var(--accent); }
+  article { max-width: 650px; margin: 0 auto; padding: 64px 24px 100px; }
+  .post-date { color: var(--text-dim); font-size: 14px; margin-bottom: 12px; }
+  h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+    line-height: 1.25;
+    margin-bottom: 36px;
+  }
+  h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 36px 0 14px;
+    color: var(--accent);
+  }
+  p { margin-bottom: 16px; font-size: 16px; }
+  ul { margin: 0 0 16px 20px; }
+  li { margin-bottom: 10px; }
+  li b { color: var(--accent); }
+  code {
+    background: #f0ede6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--accent);
+  }
+  table {
+    border-collapse: collapse;
+    margin: 20px auto;
+  }
+  td {
+    border: 1px solid var(--border);
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand">Computação Visual</a>
+  <a href="index.html" class="back">← Voltar</a>
+</header>
+
+<article>
+  <div class="post-date">15/09/2026 · Henrique Jeam</div>
+  <h1>Explorando filtragem espacial</h1>
+
+  <p>Lá no post sobre transformações de intensidade eu tinha comentado que filtragem espacial era algo que a gente ainda não tinha visto em aula. Fiquei curioso e resolvi estudar o assunto por conta própria, já que ele conecta bastante com tudo que vimos até agora sobre pixels e matrizes.</p>
+
+  <h2>A diferença pra transformação de intensidade</h2>
+  <p>A transformação de intensidade (que vimos antes) processa cada pixel isoladamente, sem olhar pros vizinhos. A filtragem espacial é diferente: o valor de saída de um pixel depende dele mesmo <i>e</i> dos pixels ao redor. Isso é feito através de uma operação chamada <b>convolução</b> (ou correlação, que é bem parecida).</p>
+
+  <h2>O que é um kernel (máscara)</h2>
+  <p>A ideia central é usar uma pequena matriz, chamada de kernel ou máscara de filtro (geralmente 3x3 ou 5x5), que é "passada" por cima de cada pixel da imagem. Pra cada posição, multiplica-se os valores do kernel pelos valores dos pixels correspondentes na imagem, soma tudo, e o resultado vira o novo valor daquele pixel.</p>
+  <p>Um exemplo simples: um kernel de média 3x3, onde todos os 9 valores são 1/9:</p>
+  <table>
+    <tr><td>1/9</td><td>1/9</td><td>1/9</td></tr>
+    <tr><td>1/9</td><td>1/9</td><td>1/9</td></tr>
+    <tr><td>1/9</td><td>1/9</td><td>1/9</td></tr>
+  </table>
+  <p>Aplicar esse kernel em cada pixel basicamente substitui o valor dele pela média dos 9 vizinhos (incluindo ele mesmo). É o filtro de suavização (blur) mais simples que existe.</p>
+
+  <h2>Filtros de suavização</h2>
+  <p>Filtros de suavização (smoothing) são usados pra reduzir ruído e borrar detalhes pequenos. Além da média simples, existe o filtro Gaussiano, que dá mais peso ao pixel central e menos peso conforme se afasta — resultado visualmente mais "natural" que a média simples, que às vezes deixa um efeito meio artificial.</p>
+
+  <h2>Filtros de nitidez (sharpening)</h2>
+  <p>Do lado oposto, existem filtros que realçam bordas e detalhes em vez de suavizar. O mais conhecido é baseado no operador Laplaciano, que basicamente mede a variação brusca de intensidade entre um pixel e seus vizinhos. Um kernel típico de nitidez tem um valor positivo alto no centro e valores negativos ao redor:</p>
+  <table>
+    <tr><td>0</td><td>-1</td><td>0</td></tr>
+    <tr><td>-1</td><td>5</td><td>-1</td></tr>
+    <tr><td>0</td><td>-1</td><td>0</td></tr>
+  </table>
+  <p>Esse tipo de kernel amplifica as diferenças entre um pixel e seus vizinhos, fazendo bordas e detalhes ficarem mais destacados.</p>
+
+  <h2>Conexão com o que já vimos</h2>
+  <p>O que achei mais interessante é que isso não é um assunto isolado — a ideia de "janela deslizante" passando por cima da imagem é bem parecida com o que vimos em amostragem (olhando pixel por pixel numa grade), e o próprio conceito de combinar valores vizinhos lembra um pouco a interpolação bilinear, só que em vez de estimar um pixel novo, a filtragem espacial recalcula um pixel existente baseado na vizinhança dele.</p>
+  <p>Pretendo testar isso na prática em algum momento, usando C com SDL (que o professor passou lá no início), pra ver os filtros funcionando de verdade numa imagem.</p>
+</article>
+
+</body>
+</html>
