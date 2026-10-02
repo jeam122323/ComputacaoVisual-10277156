@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detecção de bordas — Computação Visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --text: #1f1f1f;
+    --text-dim: #6b6b6b;
+    --accent: #7a5c3e;
+    --border: #e2ded5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.7; }
+  a { color: var(--accent); }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { font-weight: 600; font-size: 15px; text-decoration: none; color: var(--text); }
+  .back { font-size: 14px; color: var(--text-dim); text-decoration: none; }
+  .back:hover { color: var(--accent); }
+  article { max-width: 650px; margin: 0 auto; padding: 64px 24px 100px; }
+  .post-date { color: var(--text-dim); font-size: 14px; margin-bottom: 12px; }
+  h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+    line-height: 1.25;
+    margin-bottom: 36px;
+  }
+  h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 36px 0 14px;
+    color: var(--accent);
+  }
+  p { margin-bottom: 16px; font-size: 16px; }
+  ul { margin: 0 0 16px 20px; }
+  li { margin-bottom: 10px; }
+  li b { color: var(--accent); }
+  code {
+    background: #f0ede6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--accent);
+  }
+  table {
+    border-collapse: collapse;
+    margin: 12px 20px 20px 0;
+    display: inline-block;
+    vertical-align: top;
+  }
+  td {
+    border: 1px solid var(--border);
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 14px;
+  }
+  .kernels { display: flex; gap: 32px; flex-wrap: wrap; margin-bottom: 16px; }
+  .kernel-label { font-size: 13px; color: var(--text-dim); text-align: center; margin-top: -8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand">Computação Visual</a>
+  <a href="index.html" class="back">← Voltar</a>
+</header>
+
+<article>
+  <div class="post-date">22/09/2026 · Henrique Jeam</div>
+  <h1>Detecção de bordas</h1>
+
+  <p>Continuando o que comecei a explorar sobre filtragem espacial, resolvi aprofundar num uso específico dela que achei bem interessante: detecção de bordas. Faz bastante sentido esse assunto vir logo depois de filtros de suavização e nitidez, porque usa a mesma lógica de convolução com kernel, só que com um objetivo mais específico.</p>
+
+  <h2>O que é uma "borda" numa imagem</h2>
+  <p>Uma borda é basicamente um ponto onde a intensidade da imagem muda bruscamente — tipo o contorno de um objeto contra o fundo, ou a transição entre duas regiões bem diferentes de brilho. Matematicamente, isso significa que a borda está relacionada com a <b>derivada</b> da função de intensidade: onde a variação é grande, a derivada tem um valor alto (em módulo); onde a imagem é "lisa" (sem mudança), a derivada é próxima de zero.</p>
+
+  <h2>Gradiente da imagem</h2>
+  <p>Como imagem é uma função de duas variáveis (x e y), ao invés de uma derivada simples, trabalha-se com o gradiente, que tem duas componentes: a variação na horizontal (Gx) e a variação na vertical (Gy). A magnitude do gradiente (calculada como a raiz quadrada de Gx² + Gy²) indica o quão "forte" é a borda naquele ponto — isso é bem parecido com o cálculo de bordas que vi um tempo atrás num projeto de filtros em C (lá a gente já usava essa ideia de combinar gx e gy pra achar contornos, só não sabia que isso tinha um nome formal de "gradiente").</p>
+
+  <h2>Operador de Sobel</h2>
+  <p>O operador mais comum pra calcular esse gradiente é o Sobel, que usa dois kernels 3x3 — um pra detectar bordas horizontais e outro pra bordas verticais:</p>
+  <div class="kernels">
+    <div>
+      <table>
+        <tr><td>-1</td><td>0</td><td>1</td></tr>
+        <tr><td>-2</td><td>0</td><td>2</td></tr>
+        <tr><td>-1</td><td>0</td><td>1</td></tr>
+      </table>
+      <div class="kernel-label">Sobel Gx (bordas verticais)</div>
+    </div>
+    <div>
+      <table>
+        <tr><td>-1</td><td>-2</td><td>-1</td></tr>
+        <tr><td>0</td><td>0</td><td>0</td></tr>
