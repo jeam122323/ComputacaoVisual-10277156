@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limiarização e segmentação — Computação Visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --text: #1f1f1f;
+    --text-dim: #6b6b6b;
+    --accent: #7a5c3e;
+    --border: #e2ded5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.7; }
+  a { color: var(--accent); }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { font-weight: 600; font-size: 15px; text-decoration: none; color: var(--text); }
+  .back { font-size: 14px; color: var(--text-dim); text-decoration: none; }
+  .back:hover { color: var(--accent); }
+  article { max-width: 650px; margin: 0 auto; padding: 64px 24px 100px; }
+  .post-date { color: var(--text-dim); font-size: 14px; margin-bottom: 12px; }
+  h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+    line-height: 1.25;
+    margin-bottom: 36px;
+  }
+  h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 36px 0 14px;
+    color: var(--accent);
+  }
+  p { margin-bottom: 16px; font-size: 16px; }
+  ul { margin: 0 0 16px 20px; }
+  li { margin-bottom: 10px; }
+  li b { color: var(--accent); }
+  code {
+    background: #f0ede6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--accent);
+  }
+  pre {
+    background: #f0ede6;
+    padding: 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand">Computação Visual</a>
+  <a href="index.html" class="back">← Voltar</a>
+</header>
+
+<article>
+  <div class="post-date">29/09/2026 · Henrique Jeam</div>
+  <h1>Limiarização e segmentação</h1>
+
+  <p>Nos slides de transformação de intensidade apareceu o termo "limiarização (thresholding): binarização de uma imagem" quase de passagem, e fiquei com vontade de entender melhor. Acabou sendo um assunto que junta várias coisas que já vimos: transformação ponto a ponto, histograma e até bordas.</p>
+
+  <h2>A ideia básica</h2>
+  <p>Limiarizar é escolher um valor de corte T (o limiar) e transformar a imagem em preto e branco a partir dele. Todo pixel com intensidade maior que T vira branco, e todo pixel com intensidade menor ou igual vira preto. Dá pra ver isso como uma transformação de intensidade bem radical, do tipo <code>s = T(r)</code>, só que a função de saída só tem dois valores possíveis:</p>
+  <pre>if (pixel > limiar)
+    pixel = 255;
+else
+    pixel = 0;</pre>
+  <p>O resultado é uma imagem binária, que é muito usada pra separar o objeto de interesse do fundo, o que é basicamente a ideia de segmentação.</p>
+
+  <h2>O problema: como escolher o limiar?</h2>
+  <p>Aqui entra o histograma do post anterior. Em uma imagem com um objeto claro sobre um fundo escuro, o histograma costuma ter dois "morros" (bimodal): um concentrado nas intensidades baixas (fundo) e outro nas altas (objeto). Um bom limiar fica no "vale" entre esses dois picos, separando os dois grupos.</p>
+  <p>Quando o histograma é assim, dá pra escolher o limiar olhando pro gráfico. O problema é que nem toda imagem é tão bem comportada, e escolher na mão não funciona em aplicações automáticas.</p>
+
+  <h2>Limiarização automática (método de Otsu)</h2>
+  <p>Pesquisando, encontrei o método de Otsu, que escolhe o limiar automaticamente a partir do histograma. A ideia que entendi é: testar cada valor possível de T, dividir os pixels em dois grupos (abaixo e acima do corte) e escolher o T que deixa esses dois grupos o mais "separados" possível entre si, ou seja, com a menor variação dentro de cada grupo. Não aprofundei na matemática completa, mas gostei de ver que o histograma normalizado (a probabilidade de cada intensidade) é justamente o dado de entrada do método.</p>
+
+  <h2>Limitação: iluminação desigual</h2>
+  <p>Um limiar único pra imagem inteira falha quando a iluminação não é uniforme, por exemplo uma foto de um documento com sombra em um canto. Nesse caso, existe a limiarização adaptativa (local), que calcula um limiar diferente pra cada região da imagem usando a vizinhança, lembrando a lógica de janela deslizante da filtragem espacial.</p>
+
+  <h2>Conectando com o resto</h2>
+  <p>Gostei de perceber que limiarização e detecção de bordas são duas formas de segmentar: uma separa por região (quem é objeto e quem é fundo) e a outra separa por contorno (onde a intensidade muda bruscamente). Pretendo testar o limiar numa imagem real quando for mexer com C e SDL, pra ver como o valor escolhido muda o resultado.</p>
+</article>
+
+</body>
+</html>
